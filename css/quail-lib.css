@@ -1,0 +1,23 @@
+body {
+  margin-top: 80px;
+}
+
+.quail .navbar-inner {
+  background:rgb(221, 110, 74);
+  text-shadow: none;
+}
+
+.quail .navbar .nav > li > a, .quail .navbar .nav > li > a:hover {
+  color: #fff;
+}
+
+.quail .navbar .brand, .quail .navbar .nav > li > a {
+  text-shadow: none;
+}
+
+.quail .navbar .brand {
+  color: rgb(125, 93, 63);
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 190%;
+}
