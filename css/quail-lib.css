@@ -3,8 +3,11 @@ body {
 }
 
 .quail .navbar-inner {
-  background:rgb(221, 110, 74);
+  background: rgb(221, 110, 74);
   text-shadow: none;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  border: none;
 }
 
 .quail .navbar .nav > li > a, .quail .navbar .nav > li > a:hover {
@@ -13,6 +16,7 @@ body {
 
 .quail .navbar .brand, .quail .navbar .nav > li > a {
   text-shadow: none;
+  font-size: 130%;
 }
 
 .quail .navbar .brand {
@@ -20,4 +24,8 @@ body {
   font-family: 'Oswald', sans-serif;
   font-weight: 700;
   font-size: 190%;
+}
+
+.quail .hero-unit {
+  background: rgb(246, 196, 182);
 }
