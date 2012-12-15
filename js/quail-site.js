@@ -18,9 +18,9 @@
         	                    }});
     });
     if($('#tests').length) {
-      $.getJSON('/js/quail/src/resources/tests.json', function(data) {
+      $.getJSON('/tests/test_texts.json', function(data) {
         $.each(data, function(index, test) {
-          $('#tests tbody').append('<tr><td><a href="https://quail.readthedocs.org/en/latest/tests/' + index + '.html">' + index + '</a></td><td>' + test.type + '</td><td>' + test.severity +'</td></tr>');
+          $('#tests tbody').append('<tr><td>' + test.readableName +'</td><td>' + index + '</td><td>' + test.type + '</td><td>' + test.severity +'</td><td></td></tr>');
         });
       });
     }

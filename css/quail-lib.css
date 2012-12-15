@@ -2,9 +2,47 @@ body {
   margin-top: 80px;
 }
 
+body.front {
+  margin-top: 56px;
+}
 
+p {
+  font-size: 18px;
+  line-height: 28px;
+}
 
 .quail-result { padding: 3px; border-radius: 3px;}
   .quail-result.severe { border: 3px dashed red; }
   .quail-result.moderate { border: 3px dashed orange; }
   .quail-result.reccomendation { border: 3px solid green; }
+
+.front-wrapper {
+  background: #6aafb0;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#6aafb0), to(#548a8a)); /* Safari 4+, Chrome */
+  background-image: -webkit-linear-gradient(top, #6aafb0, #548a8a); /* Chrome 10+, Safari 5.1+, iOS 5+ */
+  background-image:    -moz-linear-gradient(top, #6aafb0, #548a8a); /* Firefox 3.6-15 */
+  background-image:      -o-linear-gradient(top, #6aafb0, #548a8a); /* Opera 11.10-12.00 */
+  background-image:         linear-gradient(to bottom, #6aafb0, #548a8a); /* Firefox 16+, IE10, Opera 12.50+ */
+  margin-bottom: 20px;
+  padding: 15px 0;
+  color: #fff;
+  overflow: hidden;
+  position: relative;
+}
+
+.front-wrapper .logo {
+  position: absolute;
+  right: -10px;
+  top: -35px;
+  background: url(../img/quail_background.png) top left no-repeat;
+  width: 440px;
+  height: 294px;
+}
+
+.front-wrapper h1 {
+  color: white;
+}
+
+.download {
+  text-align: center;
+}
