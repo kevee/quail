@@ -1,0 +1,15 @@
+---
+layout: default
+title: QUAIL News
+---
+
+<h1>Project news</h1>
+
+<p class="lead">
+  As major changes or announcements are made, we shall endeavor to post them here.
+</p>
+<ul class="posts">
+  {% for post in site.posts %}
+    <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a></li>
+  {% endfor %}
+</ul>
