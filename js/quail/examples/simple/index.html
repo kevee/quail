@@ -16,21 +16,8 @@
 	<script>
 	 $(document).ready(function() {
   	 
-  	 /** Just to make this sample work without a server,
-  	     we are hard-coding the list of tests instead of
-  	     loading it using JSONP.
-  	 **/
-  	 var accessibilityTests = {
-            "imgHasAlt": {
-                "type": "selector",
-                "selector": "img:not(img[alt])",
-                "severity": "severe"
-            }
-          };
-  	 
   	 $('#test').quail({ guideline : [ 'imgHasAlt' ],
 	                    jsonPath : '../../src/resources',
-	                    accessibilityTests : accessibilityTests,
 	                    testFailed : function(event) {
   	                    event.element.addClass('quail-result')
   	                         .addClass(event.severity)

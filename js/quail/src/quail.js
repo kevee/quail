@@ -91,8 +91,14 @@
           });
         }
         if(testType === 'custom') {
-          if(typeof quail[quail.accessibilityTests[testName].callback] !== 'undefined') {
-            quail[quail.accessibilityTests[testName].callback]();
+          if(typeof quail.accessibilityTests[testName].callback === 'object' ||
+             typeof quail.accessibilityTests[testName].callback === 'function') {
+            quail.accessibilityTests[testName].callback();
+          }
+          else {
+            if(typeof quail[quail.accessibilityTests[testName].callback] !== 'undefined') {
+              quail[quail.accessibilityTests[testName].callback]();
+            }
           }
         }
         if(typeof quail[quail.testCallbacks[testType]] !== 'undefined') {
@@ -108,8 +114,54 @@
       return (text.trim().length) ? false : true;
     },
 
+    /**
+     * Read more about this function here: https://github.com/kevee/quail/wiki/Layout-versus-data-tables
+     */
     isDataTable : function(table) {
-      return (table.find('th').length && table.find('tr').length > 2) ? true : false;
+      //If there are less than three rows, why do a table?
+      if(table.find('tr').length < 3) {
+        return false;
+      }
+      //If you are scoping a table, it's probably not being used for layout
+      if(table.find('th[scope]').length) {
+        return true;
+      }
+      var numberRows = table.find('tr:has(td)').length;
+      //Check for odd cell spanning
+      var spanCells = table.find('td[rowspan], td[colspan]');
+      var isDataTable = true;
+      if(spanCells.length) {
+        var spanIndex = {};
+        spanCells.each(function() {
+          if(typeof spanIndex[$(this).index()] === 'undefined') {
+            spanIndex[$(this).index()] = 0;
+          }
+          spanIndex[$(this).index()]++;
+        });
+        $.each(spanIndex, function(index, count) {
+          if(count < numberRows) {
+            isDataTable = false;
+          }
+        });
+      }
+      //If there are sub tables, but not in the same column row after row, this is a layout table
+      var subTables = table.find('table');
+      if(subTables.length) {
+        var subTablesIndexes = {};
+        subTables.each(function() {
+          var parentIndex = $(this).parent('td').index();
+          if(parentIndex !== false && typeof subTablesIndexes[parentIndex] === 'undefined') {
+            subTablesIndexes[parentIndex] = 0;
+          }
+          subTablesIndexes[parentIndex]++;
+        });
+        $.each(subTablesIndexes, function(index, count) {
+          if(count < numberRows) {
+            isDataTable = false;
+          }
+        });
+      }
+      return isDataTable;
     },
 
     html : { },
@@ -119,6 +171,8 @@
     accessibilityResults : { },
 
     accessibilityTests : { },
+    
+    textSelector : 'p, h1, h2, h3, h4, h5, h6, div, pre, blockquote, aside, article, details, summary, figcaption, footer, header, hgroup, nav, section',
 
     loadTests : function() {
 
@@ -146,7 +200,14 @@
     },
     
     loadHasEventListener : function() {
-      $.ajax({url : quail.options.jsonPath + '/../jquery/jquery.hasEventListener/jQuery.hasEventListener-2.0.3.min.js',
+      $.ajax({url : quail.options.jsonPath + '/../../libs/jquery.hasEventListener/jQuery.hasEventListener-2.0.3.min.js',
+              async : false,
+              dataType : 'script'
+            });
+    },
+    
+    loadPixelToEm : function() {
+      $.ajax({url : quail.options.jsonPath + '/../../libs/jquery.pxToEm/pxem.jQuery.js',
               async : false,
               dataType : 'script'
             });
@@ -254,6 +315,40 @@
           return 1;
         }
         return matchedWord.length;
+      }
+    },
+    
+    statistics : {
+    
+      setDecimal : function( num, numOfDec ){
+        var pow10s = Math.pow( 10, numOfDec || 0 );
+        return ( numOfDec ) ? Math.round( pow10s * num ) / pow10s : num;
+      },
+      
+      average : function( numArr, numOfDec ){
+        var i = numArr.length,
+          sum = 0;
+        while( i-- ){
+          sum += numArr[ i ];
+        }
+        return quail.statistics.setDecimal( (sum / numArr.length ), numOfDec );
+      },
+      
+      variance : function( numArr, numOfDec ){
+        var avg = quail.statistics.average( numArr, numOfDec ),
+          i = numArr.length,
+          v = 0;
+       
+        while( i-- ){
+          v += Math.pow( (numArr[ i ] - avg), 2 );
+        }
+        v /= numArr.length;
+        return quail.statistics.setDecimal( v, numOfDec );
+      },
+      
+      standardDeviation : function( numArr, numOfDec ){
+        var stdDev = Math.sqrt( quail.statistics.variance( numArr, numOfDec ) );
+        return quail.statistics.setDecimal( stdDev, numOfDec );
       }
     },
     
@@ -484,6 +579,15 @@
       });
     },
     
+    documentIsWrittenClearly : function() {
+      quail.html.find(quail.textSelector).each(function() {
+        var text = quail.textStatistics.cleanText($(this).text());
+        if(Math.round((206.835 - (1.015 * quail.textStatistics.averageWordsPerSentence(text)) - (84.6 * quail.textStatistics.averageSyllablesPerWord(text)))) < 60) {
+          quail.testFails('documentIsWrittenClearly', $(this));
+        }
+      });
+    },
+    
     documentLangIsISO639Standard : function() {
       var languages = quail.loadString('language_codes');
       var language = quail.html.find('html').attr('lang');
@@ -607,6 +711,20 @@
       });
     },
     
+    imgAltTextNotRedundant : function() {
+      var altText = {};
+      quail.html.find('img[alt]').each(function() {
+        if(typeof altText[$(this).attr('alt')] === 'undefined') {
+          altText[$(this).attr('alt')] = $(this).attr('src');
+        }
+        else {
+          if(altText[$(this).attr('alt')] !== $(this).attr('src')) {
+            quail.testFails('imgAltTextNotRedundant', $(this));
+          }
+        }
+      });
+    },
+    
     inputCheckboxRequiresFieldset : function() {
       quail.html.find(':checkbox').each(function() {
         if(!$(this).parents('fieldset').length) {
@@ -650,6 +768,15 @@
            height > 50) {
             quail.testFails('imgImportantNoSpacerAlt', $(this));
         }
+      });
+    },
+    
+    imgNonDecorativeHasAlt : function() {
+      quail.html.find('img[alt]').each(function() {
+        if(quail.isUnreadable($(this).attr('alt')) &&
+           ($(this).width() > 100 || $(this).height() > 100)) {
+             quail.testFails('imgNonDecorativeHasAlt', $(this));
+           }
       });
     },
 
@@ -754,6 +881,23 @@
         }
       });
     },
+    
+    selectJumpMenu : function() {
+      if(quail.html.find('select').length === 0) {
+        return;
+      }
+      if(typeof jQuery.hasEventListener === 'undefined') {
+        quail.loadHasEventListener();
+      }
+      
+      quail.html.find('select').each(function() {
+        if(($(this).parent('form').find(':submit').length === 0 ) &&
+           ($.hasEventListener($(this), 'change') ||
+           $(this).attr('onchange'))) {
+             quail.testFails('selectJumpMenu', $(this));
+        }
+      });
+    },
 
     tabIndexFollowsLogicalOrder : function() {
       var index = 0;
@@ -831,6 +975,25 @@
       });
     },
     
+    tableUsesScopeForRow : function() {
+      quail.html.find('table').each(function() {
+        $(this).find('td:first-child').each(function() {
+          var $next = $(this).next('td');
+          if(($(this).css('font-weight') === 'bold' && $next.css('font-weight') !== 'bold') ||
+             ($(this).find('strong').length && !$next.find('strong').length)) {
+               quail.testFails('tableUsesScopeForRow', $(this));
+             }
+        });
+        $(this).find('td:last-child').each(function() {
+          var $prev = $(this).prev('td');
+          if(($(this).css('font-weight') === 'bold' && $prev.css('font-weight') !== 'bold') ||
+             ($(this).find('strong').length && !$prev.find('strong').length)) {
+               quail.testFails('tableUsesScopeForRow', $(this));
+             }
+        });
+      });
+    },
+    
     tableWithMoreHeadersUseID : function() {
       quail.html.find('table:has(th)').each(function() {
         var $table = $(this);
@@ -844,6 +1007,67 @@
           }
         });
       });
+    },
+    
+    textIsNotSmall : function() {
+      if(typeof jQuery.toPx === 'undefined') {
+        quail.loadPixelToEm();
+      }
+      quail.html.find(quail.textSelector).each(function() {
+        var fontSize = $(this).css('font-size');
+        if(fontSize.search('em') > 0) {
+          fontSize = $(this).toPx({scope : quail.html});
+        }
+        fontSize = parseInt(fontSize.replace('px', ''), 10);
+        if(fontSize < 10) {
+          quail.testFails('textIsNotSmall', $(this));
+        }
+      });
+    },
+    
+    videosEmbeddedOrLinkedNeedCaptions : function() {
+      quail.html.find('a').each(function() {
+        var $link = $(this);
+        $.each(quail.videoServices, function(type, callback) {
+          if(callback.isVideo($link.attr('href'))) {
+            callback.hasCaptions(function(hasCaptions) {
+              if(!hasCaptions) {
+                quail.testFails('videosEmbeddedOrLinkedNeedCaptions', $link);
+              }
+            });
+          }
+        });
+      });
+    },
+    
+    videoServices : {
+      
+      youTube : {
+        
+        videoID : '',
+        
+        apiUrl : 'http://gdata.youtube.com/feeds/api/videos/?q=%video&caption&v=2&alt=json',
+        
+        isVideo : function(url) {
+          var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+          var match = url.match(regExp);
+          if (match && match[7].length === 11) {
+            quail.videoServices.youTube.videoID = match[7];
+            return true;
+          }
+          return false;
+        },
+        
+        hasCaptions : function(callback) {
+          $.ajax({url : this.apiUrl.replace('%video', this.videoID),
+                  async : false,
+                  dataType : 'json',
+                  success : function(data) {
+                    callback((data.feed.openSearch$totalResults.$t > 0) ? true : false);
+                  }
+          });
+        }
+      }
     },
     
     preShouldNotBeUsedForTabularLayout : function() {
