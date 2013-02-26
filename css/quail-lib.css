@@ -6,6 +6,16 @@ body.front {
   margin-top: 56px;
 }
 
+body .navbar-inner {
+background: #876554;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#876554), to(#5f463a)); /* Safari 4+, Chrome */
+  background-image: -webkit-linear-gradient(top, #876554 #5f463a); /* Chrome 10+, Safari 5.1+, iOS 5+ */
+  background-image:    -moz-linear-gradient(top, #876554 #5f463a); /* Firefox 3.6-15 */
+  background-image:      -o-linear-gradient(top, #876554 #5f463a); /* Opera 11.10-12.00 */
+  background-image:         linear-gradient(to bottom, #876554, #5f463a); /* Firefox 16+, IE10, Opera 12.50+ */
+
+}
+
 p {
   font-size: 18px;
   line-height: 28px;
@@ -17,12 +27,12 @@ p {
   .quail-result.reccomendation { border: 3px solid green; }
 
 .front-wrapper {
-  background: #6aafb0;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#6aafb0), to(#548a8a)); /* Safari 4+, Chrome */
-  background-image: -webkit-linear-gradient(top, #6aafb0, #548a8a); /* Chrome 10+, Safari 5.1+, iOS 5+ */
-  background-image:    -moz-linear-gradient(top, #6aafb0, #548a8a); /* Firefox 3.6-15 */
-  background-image:      -o-linear-gradient(top, #6aafb0, #548a8a); /* Opera 11.10-12.00 */
-  background-image:         linear-gradient(to bottom, #6aafb0, #548a8a); /* Firefox 16+, IE10, Opera 12.50+ */
+  background: #e7cd6a;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#e7cd6a), to(#dfc075)); /* Safari 4+, Chrome */
+  background-image: -webkit-linear-gradient(top, #e7cd6a, #dfc07); /* Chrome 10+, Safari 5.1+, iOS 5+ */
+  background-image:    -moz-linear-gradient(top, #e7cd6a, #dfc07); /* Firefox 3.6-15 */
+  background-image:      -o-linear-gradient(top, #e7cd6a, #dfc07); /* Opera 11.10-12.00 */
+  background-image:         linear-gradient(to bottom, #e7cd6a, #dfc07); /* Firefox 16+, IE10, Opera 12.50+ */
   margin-bottom: 20px;
   padding: 15px 0;
   color: #fff;
@@ -32,8 +42,8 @@ p {
 
 .front-wrapper .logo {
   position: absolute;
-  right: -10px;
-  top: -35px;
+  right: 0;
+  top: 0;
   background: url(../img/quail_background.png) top left no-repeat;
   width: 302px;
   height: 294px;
