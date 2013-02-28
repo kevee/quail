@@ -27,12 +27,12 @@ p {
   .quail-result.reccomendation { border: 3px solid green; }
 
 .front-wrapper {
-  background: #e7cd6a;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#e7cd6a), to(#dfc075)); /* Safari 4+, Chrome */
-  background-image: -webkit-linear-gradient(top, #e7cd6a, #dfc07); /* Chrome 10+, Safari 5.1+, iOS 5+ */
-  background-image:    -moz-linear-gradient(top, #e7cd6a, #dfc07); /* Firefox 3.6-15 */
-  background-image:      -o-linear-gradient(top, #e7cd6a, #dfc07); /* Opera 11.10-12.00 */
-  background-image:         linear-gradient(to bottom, #e7cd6a, #dfc07); /* Firefox 16+, IE10, Opera 12.50+ */
+  background: #A08B4D;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#A08B4D), to(#dfc075)); /* Safari 4+, Chrome */
+  background-image: -webkit-linear-gradient(top, #A08B4D, #dfc07); /* Chrome 10+, Safari 5.1+, iOS 5+ */
+  background-image:    -moz-linear-gradient(top, #A08B4D, #dfc07); /* Firefox 3.6-15 */
+  background-image:      -o-linear-gradient(top, #A08B4D, #dfc07); /* Opera 11.10-12.00 */
+  background-image:         linear-gradient(to bottom, #A08B4D, #dfc07); /* Firefox 16+, IE10, Opera 12.50+ */
   margin-bottom: 20px;
   padding: 15px 0;
   color: #fff;
@@ -47,6 +47,12 @@ p {
   background: url(../img/quail_background.png) top left no-repeat;
   width: 302px;
   height: 294px;
+  z-index: 1;
+}
+
+.front-wrapper .container {
+  z-index: 10;
+  position: relative;
 }
 
 .front-wrapper h1 {
