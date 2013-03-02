@@ -7,9 +7,9 @@ title: QUAIL
   <div class="container">
     <div class="row">
       <div class="span10">
-        <h1>QUAIL Accessibility Information Library</h1>
+        <h1>QUAIL Accessibility Information Library - The jQuery accessibility checker</h1>
         <p class="lead">
-          The jQuery library for checking content for accessibility and quality.
+          The jQuery plugin for ensuring accessible and quality content.
         </p>
         <p class="download">
           <a href="http://github.com/kevee/quail" class="btn btn-info btn-large">
@@ -27,16 +27,27 @@ title: QUAIL
   <div class="row">
     <div class="span6">
     <p class="lead">
-      <abbr title="Quail Accessibility Information Library">QUAIL</abbr> is a jQuery and Sizzle-comptable library for checking content against accessibility guidelines. It provides a flexible way to test for certain problems (say, images missing an alt text) and a collection of over <strong>250</strong> tests to get you started.
+      <abbr title="Quail Accessibility Information Library">QUAIL</abbr> is a jQuery plugin for checking content against accessibility guidelines. It provides a flexible way to test for certain problems (say, images missing an alt text) and a collection of over <strong>250</strong> tests to get you started. Defining your own tests is easy, and you can pick-and-choose tests to focus on the needs of your own app.
     </p>
     <p>QUAIL has just made a big move from a humble PHP library to a lightweight and powerful client-side accessibility checker. You can <a href="http://code.google.com/p/quail-lib">still find the 1.0 version of QUAIL</a>, or <strong><a href="http://github.com/kevee/quail">check out the future of QUAIL</a></strong>.
     </p>
     </div>
     <div class="span6">
-      <div class="well demonstration">
-        <h3>Demonstration</h3>
-        <p>There are several accessibility problems in here, but QUAIL will find them.</p>
-        <p><img src="img/kogepan.png"></p>
+      <div class="well">
+        <div class="demonstration">
+          <h3>Demonstration</h3>
+          <p>There are several accessibility problems in here, but QUAIL will find them.</p>
+          <p><img src="img/kogepan.png"></p>
+        </div>
+        <h3>The code</h3>
+        <pre><code>$('.demonstration').quail({
+ jsonPath : '/js/quail/src/resources', 
+ guideline : [ 'imgHasAlt',
+               'documentAbbrIsUsed'
+             ],
+   testFailed : function(event) {
+    ...code to highlight problems...
+  }});</code></pre>
       </div>
     </div>
   </div>
