@@ -36,7 +36,7 @@
        guideline : [ 'imgAltNotEmptyInAnchor' ],
 	     jsonPath  : '../../src/resources',
 	     ckEditorMessage : function(event) {
-  	     return 'Event fired ' + event.testName;
+  	     return 'This image is being used as a link; however, it has an empty description. Please add a description to this image.';
 	     }
 	    };
   	  CKEDITOR.replace($('.ckeditor').get(0), {
