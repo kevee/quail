@@ -2,30 +2,54 @@
 layout: front
 title: QUAIL Accessibility Information Library - The jQuery accessibility checker
 ---
-<div class="front-wrapper">
-      <div class="logo"></div>
-  <div class="container">
-    <div class="row">
-      <div class="span10">
-        <h1>QUAIL Accessibility Information Library</h1>
-        <p class="lead">
-          The jQuery plugin for ensuring accessible and quality content.
+<div class="container">
+  <div class="row">
+      <div class="col-md-6">
+        <h1 class="quail-front">quail</h1>
+        <p class="lead big-lead">
+          Accessibility testing in the browser and on the server.
         </p>
         <p class="download">
-          <a href="http://github.com/kevee/quail" class="btn btn-info btn-large">
+          <a href="http://github.com/kevee/quail" class="btn btn-info btn-lg">
             Visit us on GitHub
           </a>
-          <a href="https://github.com/kevee/quail/tags" class="btn btn-success btn-large">
+          <a href="https://github.com/kevee/quail/releases" class="btn btn-success btn-lg">
             Download QUAIL
           </a>
         </p>
+        <p><strong>Use Drupal</strong>? Check out the <a href="http://drupal.org/project/accessibility">Accessibility module</a>, or watch and read the <a href="https://archive.org/details/BakeAccessibilityIntoYourProject">2013 BADCamp presentation</a> on using quail in your site.
+        </p>
       </div>
-    </div>
+      <div class="col-md-6 hidden-sm hidden-xs">
+        <img class="logo" alt="" src="/img/quail.png">
+      </div>
   </div>
 </div>
+<nav class="navbar navbar-default navbar-quail" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav">
+      <li><a href="/tests">Tests</a></li>
+      <li><a href="/guidelines">Guidelines</a></li>
+      <li><a href="/#documentation">Documentation</a></li>
+      <li><a href="/examples">Examples</a></li>
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+
 <div class="container">
   <div class="row">
-    <div class="span6">
+    <div class="col-md-6">
     <p class="lead">
       <abbr title="Quail Accessibility Information Library">QUAIL</abbr> is a jQuery plugin for checking content against accessibility guidelines. It provides a flexible way to test for certain problems (say, images missing an alt text) and a collection of over <strong>200</strong> tests to get you started. Defining your own tests is easy, and you can pick-and-choose tests to focus on the needs of your own app.
     </p>
@@ -37,12 +61,12 @@ title: QUAIL Accessibility Information Library - The jQuery accessibility checke
         You can <a href="http://quail.readthedocs.org">read the latest documentation</a>, hosted at <a href="http://readthedocs.org">readthedocs.org</a>.
       </p>
     </div>
-    <div class="span6">
+    <div class="col-md-6">
       <div class="well">
         <div class="demonstration">
           <h3>Demonstration</h3>
           <p>There are several accessibility problems in here, but QUAIL will find them.</p>
-          <p><img src="img/kogepan.png"></p>
+          <p><img src="/img/demo.png"></p>
         </div>
         <h3>The code</h3>
         <pre><code>$('.demonstration').quail({
