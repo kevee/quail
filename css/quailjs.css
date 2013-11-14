@@ -3,7 +3,8 @@ h1, h2, h3, h4, h5, h6, .navbar-brand {
 }
 
 h1.quail-front {
-  font-size: 60px;
+  font-size: 70px;
+  margin-bottom: 30px;
 }
 
 .lead.big-lead {
