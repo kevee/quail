@@ -35,3 +35,7 @@ h1.quail-front {
 .navbar.navbar-quail .navbar-nav>li>a, .navbar-quail.navbar-default .navbar-brand {
   color: #fff;
 }
+
+.download a {
+  margin-bottom: 10px;
+}
