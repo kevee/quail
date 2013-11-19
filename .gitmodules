@@ -1,0 +1,3 @@
+[submodule "js/quail"]
+	path = js/quail
+	url = https://github.com/kevee/quail.git
