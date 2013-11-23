@@ -2,8 +2,8 @@
 		$(document).ready(function() {
 			var $tr = $('<tr>');
 			var firstRow = true;
-			$.getJSON('https://rawgithub.com/kevee/quail/yaml-config/dist/tests.json', function(tests) {
-				$.getJSON('https://rawgithub.com/kevee/quail/yaml-config/dist/guidelines/wcag.json', function(guideline) {
+			$.getJSON('http://webprojects.csumb.edu/quail/mirror.php?p=kevee/quail/yaml-config/dist/tests.json', function(tests) {
+				$.getJSON('http://webprojects.csumb.edu/quail/mirror.php?p=kevee/quail/yaml-config/dist/guidelines/wcag.json', function(guideline) {
 					$.each(guideline.guidelines, function(id, sc) {
 						$tr = $('<tr>');
 						$tr.append('<td rowspan="' + sc.techniques.length + '"><strong>' + id + '</strong> ' + sc.title + '</td>');
