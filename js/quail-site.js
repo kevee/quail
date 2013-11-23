@@ -3,7 +3,7 @@
     var messages = { imgHasAlt : 'Your images are missing alt text here. Better fix that.',
                      documentAbbrIsUsed : 'This abbreviation needs to be wrapped in an abbr or acronym tag.'
     }
-    $('.demonstration').quail({jsonPath : '/js/quail/src/resources', 
+    $('.demonstration').quail({jsonPath : 'http://webprojects.csumb.edu/quail/mirror.php?p=kevee/quail/master/src/resources', 
                                guideline : [ 'imgHasAlt', 'documentAbbrIsUsed' ],
                                testFailed : function(event) {
           	                    if(event.testName == 'documentAbbrIsUsed') {
