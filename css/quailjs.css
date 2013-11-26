@@ -40,3 +40,5 @@ h1.quail-front {
 .download a {
   margin-bottom: 10px;
 }
+
+.quail-message { padding: 4px; border-radius: 2px; background: #d8b3b3; }
