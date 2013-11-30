@@ -1,0 +1,13 @@
+quail.strings.suspicious_links = [
+"click here",
+"click",
+"more",
+"here",
+"read more",
+"clic aqu&iacute;",
+"clic",
+"haga clic",
+"m&aacute;s",
+"aqu&iacute;",
+"image"
+];
