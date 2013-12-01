@@ -38,7 +38,7 @@ module.exports = function(grunt) {
         banner: '<%= pkg.options.banner %>' + "\n" + ';(function($) {' + "\n",
         footer: "\n" + '})(jQuery);',
         stripBanners: true
-      },  
+      },
       dist: {
         src: ['src/js/core.js', 'src/js/components/*.js', 'src/js/strings/*.js', 'src/js/custom/*.js'],
         dest: 'dist/quail.jquery.js'
@@ -92,6 +92,16 @@ module.exports = function(grunt) {
           { src : 'dist/guidelines/wcag.json', dest : 'dist/guidelines/wcag.tests.json' }
         ]
       }
+    },
+    'gh-pages': {
+      options: {
+        base: 'dist',
+        push: false,
+        add: true,
+        repo: 'https://github.com/kevee/quail.git',
+        clone: 'public_html'
+      },
+      src: '**'
     }
   });
   grunt.loadTasks('tasks');
@@ -103,7 +113,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-convert');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-contrib-clean');
-
+  grunt.loadNpmTasks('grunt-gh-pages');
 
   // By default, just run tests
   grunt.registerTask('default', ['convert', 'concat', 'jshint', 'buildGuideline', 'qunit']);
@@ -116,4 +126,7 @@ module.exports = function(grunt) {
 
   // Test task.
   grunt.registerTask('test', ['convert', 'concat', 'jshint', 'buildGuideline', 'qunit']);
+
+  // Publish task.
+  grunt.registerTask('publish', ['gh-pages']);
 };
