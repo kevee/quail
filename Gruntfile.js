@@ -6,7 +6,8 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('quail.json'),
     clean: {
-      hooks: ['.git/hooks/pre-commit']
+      hooks: ['.git/hooks/pre-commit'],
+      publish: ['public_html']
     },
     convert: {
       yml2json: {
@@ -128,5 +129,5 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['convert', 'concat', 'jshint', 'buildGuideline', 'qunit']);
 
   // Publish task.
-  grunt.registerTask('publish', ['gh-pages']);
+  grunt.registerTask('publish', ['clean:publish', 'gh-pages', 'createGemfile:public_html']);
 };
