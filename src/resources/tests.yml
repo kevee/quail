@@ -1399,6 +1399,7 @@ focusIndicatorVisible:
           - "C15"
           - "G165"
           - "G195"
+          - "SCR31"
   tags:
     - "focus"
     - "content"
