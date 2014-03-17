@@ -4224,3 +4224,19 @@ whiteSpaceInWord:
   tags:
     - "content"
   callback: "whiteSpaceInWord"
+doNotUseGraphicalSymbolToConveyInformation:
+  type: "custom"
+  testability: 1
+  title:
+    en: "Using a graphical symbol alone to convey information"
+  description:
+    en: "..."
+  guidelines:
+    wcag:
+      1.3.3:
+        techniques:
+          - "F26"
+  tags:
+    - "link"
+    - "content"
+  callback: "doNotUseGraphicalSymbolToConveyInformation"
