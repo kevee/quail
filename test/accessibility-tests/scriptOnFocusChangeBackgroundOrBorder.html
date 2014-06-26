@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head>
+  <title>scriptOnFocusChangeBackgroundOrBorder</title>
+</head>
+<body>
+  <div class="quail-test" data-expected="fail" data-accessibility-test="scriptOnFocusChangeBackgroundOrBorder">
+    <input name="num" value="0" style="background-color:blue">
+  </div>
+
+  <div class="quail-test" data-expected="pass" data-accessibility-test="scriptOnFocusChangeBackgroundOrBorder">
+    <input name="num" onfocus="this.style.backgroundColor='red';" onblur="this.style.backgroundColor = '';" value="0" style="background-color:blue">
+  </div>
+
+  <div class="quail-test" data-expected="pass" data-accessibility-test="scriptOnFocusChangeBackgroundOrBorder">
+    <input name="num" onfocus="this.style.backgroundColor='red';" value="0" style="background-color:blue">
+  </div>
+
+  <script src="../quail-testrunner.js"></script>
+</body>
+</html>
