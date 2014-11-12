@@ -2,7 +2,7 @@
  * The test runner will take a properly-formatted page and
  * run accessibility tests against it. To learn more about how to use
  * the test runner, read the wiki at:
- * https://github.com/kevee/quail/wiki/Writing-unit-tests-and-testing-accessibility-tests
+ * https://github.com/quailjs/quail/wiki/Writing-unit-tests-and-testing-accessibility-tests
  */
 
 
