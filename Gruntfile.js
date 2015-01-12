@@ -30,19 +30,8 @@ module.exports = function(grunt) {
     },
     concat: {
       options: {
-        banner: [
-          "<%= pkg.options.banner %>",
-          "!function(root, factory) {",
-          "  if (typeof define === 'function' && define.amd) {",
-          "    define(['jquery'], factory);",
-          "  } else {",
-          "    factory(root.jQuery);",
-          "  }",
-          "}(this, function($) {",
-          "  'use strict';",
-          "  var jQuery = $;"
-          ].join("\n"),
-        footer: "\n" + '});',
+        banner: '<%= pkg.options.banner %>' + "\n" + ';(function($) {' + "\n" + '\'use strict\';' + '\n',
+        footer: "\n" + '})(jQuery);',
         stripBanners: true
       },
       dist: {
