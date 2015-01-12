@@ -3,13 +3,12 @@
   "version": "2.1.0",
   "main": "dist/*",
   "ignore": [
-    ".jshintrc",
     "**/*.txt"
   ],
   "dependencies": {
     "jquery": "~2.0.3",
     "node-htmlparser": "~2.0.0",
-    "RainbowVis-JS" : "https://github.com/anomal/RainbowVis-JS.git"
+    "RainbowVis-JS": "https://github.com/anomal/RainbowVis-JS.git"
   },
   "devDependencies": {
     "qunit": "~1.14.0",
