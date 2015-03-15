@@ -5,8 +5,15 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('quail.json'),
-    clean: {
-      vendor: ['dist/vendor']
+    copy: {
+      vendor: {
+        src: [
+          'node_modules/jquery/dist/jquery.min.js'
+        ],
+        dest: 'dist/',
+        expand: true,
+        flatten: true
+      }
     },
     convert: {
       yml2json: {
@@ -36,11 +43,12 @@ module.exports = function(grunt) {
       },
       dist: {
         src: [
-          'src/js/core.js',
           'src/js/quail.jquery.js',
+          'src/js/core.js',
           'src/js/components/*.js',
           'src/js/strings/*.js',
           'src/js/custom/*.js',
+          'lib/assessments/**/*.js',
           'src/js/lib/*.js',
           'src/js/lib/wcag/*.js',
           'src/js/lib/wcag2/*.js'
@@ -49,11 +57,12 @@ module.exports = function(grunt) {
       },
       test: {
         src: [
-          'src/js/core.js',
           'src/js/quail.jquery.js',
+          'src/js/core.js',
           'src/js/components/*.js',
           'src/js/strings/*.js',
           'src/js/custom/*.js',
+          'lib/assessments/**/*.js',
           'src/js/lib/*.js',
           'src/js/lib/wcag/*.js',
           'src/js/lib/wcag2/*.js'
@@ -64,41 +73,6 @@ module.exports = function(grunt) {
           footer: "\n" + 'window.__testQuail = quail; })(jQuery);',
           stripBanners: true
         }
-      },
-      testLib: {
-        src: [
-          'dist/tests.json',
-          'lib/jquery/jquery.js',
-          'lib/RainbowVis-JS/rainbowvis.js',
-          'lib/qunit/qunit.js',
-          'test/quail-testing.jquery.js',
-          'test/testrunner.js'
-        ],
-        dest: 'test/quail-testrunner.js',
-        options: {
-          banner: '(function() {',
-          footer: '})();',
-          stripBanners: true,
-          process: function(src, filepath) {
-            if(filepath === 'dist/tests.json') {
-              return 'var __quailTests = ' + src + ';' + "\n";
-            }
-            return src;
-          }
-        }
-      }
-    },
-    copy: {
-      vendor: {
-        expand: true,
-        src: 'node_modules/{commander,shelljs,phantomjs,jquery}/**/*',
-        dest: 'dist/vendor/'
-      },
-      evaluator: {
-        expand: true,
-        flatten: true,
-        src: 'src/js/lib/phantom_evaluator.js',
-        dest: 'dist/evaluator'
       }
     },
     uglify: {
@@ -111,15 +85,19 @@ module.exports = function(grunt) {
         banner: '<%= pkg.options.banner %>'
       }
     },
-    qunit: {
-      all: ['test/quail.html'],
-      single: ['test/' + grunt.option('file')]
-    },
     karma: {
       unit: {
-        configFile: 'karma.conf.js',
+        configFile: 'config/karma-unit.conf.js',
         singleRun: true,
         browsers: ['PhantomJS']
+      }
+    },
+    execute: {
+      assessments: {
+        options: {
+          cwd: '.'
+        },
+        src: ['test/assessmentSpecs/testRunner.js']
       }
     },
     jshint: {
@@ -145,9 +123,7 @@ module.exports = function(grunt) {
         files: [
           'src/**/*.js',
           'src/**/*.yml',
-          'test/accessibility-tests/*.html',
-          'test/core/*.html',
-          'test/testrunner.js'
+          'test/accessibility-tests/*.html'
         ],
         tasks: [
           'convert',
@@ -219,40 +195,73 @@ module.exports = function(grunt) {
         message: 'Auto-generated commit from grunt gh-pages.'
       },
       src: ['dist/**', 'src/**']
-    },
-    bower: {
-      install: { }
     }
   });
   grunt.loadTasks('tasks');
   grunt.loadNpmTasks('grunt-chmod');
   grunt.loadNpmTasks('grunt-karma');
-  grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-convert');
+  grunt.loadNpmTasks('grunt-execute');
   grunt.loadNpmTasks('grunt-gh-pages');
-  grunt.loadNpmTasks('grunt-bower-task');
 
   // By default, just run tests
-  grunt.registerTask('default', ['bower:install', 'convert', 'concat', 'jshint', 'buildTestFilesJson', 'buildGuideline', 'compressTestsJson', 'qunit:all', 'karma']);
+  grunt.registerTask('default', [
+    'convert',
+    'concat',
+    'jshint',
+    'buildTestFilesJson',
+    'buildGuideline',
+    'compressTestsJson',
+    'karma',
+    'execute:assessments'
+  ]);
 
   // Dev task
   grunt.registerTask('dev', ['convert', 'concat']);
 
 
   // Build task.
-  grunt.registerTask('build', ['bower:install', 'convert', 'concat', 'jshint', 'buildTestFilesJson', 'buildGuideline', 'compressTestsJson', 'uglify']);
+  grunt.registerTask('build', [
+    'convert',
+    'concat',
+    'jshint',
+    'buildTestFilesJson',
+    'buildGuideline',
+    'compressTestsJson',
+    'uglify'
+  ]);
 
   // Release task.
-  grunt.registerTask('release', ['bower:install', 'convert', 'concat', 'jshint', 'buildTestFilesJson', 'qunit:all', 'karma', 'buildGuideline', 'compressTestsJson', 'uglify', 'gh-pages']);
+  grunt.registerTask('release', [
+    'convert',
+    'concat',
+    'jshint',
+    'buildTestFilesJson',
+    'karma',
+    'execute:assessments',
+    'buildGuideline',
+    'compressTestsJson',
+    'uglify',
+    'gh-pages'
+  ]);
 
   // Test task.
-  grunt.registerTask('test', ['bower:install', 'convert', 'concat', 'jshint', 'buildTestFilesJson', 'buildGuideline', 'compressTestsJson', 'qunit:all', 'karma']);
+  grunt.registerTask('test', [
+    'convert',
+    'concat',
+    'copy',
+    //'jshint',
+    // 'buildTestFilesJson',
+    // 'buildGuideline',
+    // 'compressTestsJson',
+    // 'karma',
+    'execute:assessments'
+  ]);
 
   grunt.registerTask('publish', ['gh-pages']);
 };

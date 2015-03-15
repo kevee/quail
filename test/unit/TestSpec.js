@@ -1,30 +1,11 @@
 describe('Test', function () {
   var _test;
-  var scope;
 
   beforeEach(function () {
+    quail['peregrine'] = function () {};
     _test = new quail.lib.Test('peregrine', {
       'bird': 'falcon'
     });
-
-    // Create Dom elements for the test scope.
-    var div = document.createElement('div');
-    var html = '';
-    html += '<a href="#" class="fail unittest">fake link</a>';
-    html += '<a href="#" class="pass unittest">fake link</a>';
-    html += '<b class="unittest">fake bold tag</b>';
-    html += '<i class="unittest">fake italic tag</i>';
-    html += '<i class="unittest">fake italic tag</i>';
-    html += '<i class="unittest">fake italic tag</i>';
-    html += '<i class="unittest">fake italic tag</i>';
-    html += '<i class="unittest">fake italic tag</i>';
-    html += '<i class="unittest">fake italic tag</i>';
-    html += '<i class="unittest">fake italic tag</i>';
-    html += '<i class="unittest">fake italic tag</i>';
-    html += '<i class="unittest">fake italic tag</i>';
-    html += '<i class="unittest">fake italic tag</i>';
-    div.innerHTML = html;
-    scope = div;
   });
 
   it('should be an instance of Test', function () {
@@ -52,13 +33,16 @@ describe('Test', function () {
 
   describe('Invoke/selector', function () {
     beforeEach(function () {
-      _test = new quail.lib.Test('fakeLinkTest', {
-        'type': 'selector',
-        'options': {
-          'selector': 'a.unittest',
-        },
-        'scope': scope
-      });
+      // Create two failed cases.
+      quail['fakeLinkTest'] = function (quail, test, Case) {
+        for (var i = 0, il = 2; i < il; ++i) {
+          test.add(Case({
+            element: $('<span></span>')[0],
+            status: 'failed'
+          }));
+        }
+      };
+      _test = new quail.lib.Test('fakeLinkTest');
     });
 
     it('should create two Cases', function () {
@@ -72,24 +56,18 @@ describe('Test', function () {
 
     it('should create one Case', function () {
       var options = _test.get('options');
-      options.selector = 'a.unittest.malarkey';
-      _test.set('options', options);
+      // Create one passed case.
+      quail['fakeLinkTest'] = function (quail, test, Case) {
+        test.add(Case({
+          element: $('<span></span>')[0],
+          status: 'passed'
+        }));
+      };
       _test.invoke();
 
       expect(_test.length).to.equal(1);
       expect(_test[0]).to.be.instanceof(quail.lib.Case);
       expect(_test[0].get('status')).to.equal('passed');
-    });
-
-    it('should create one Case', function () {
-      var options = _test.get('options');
-      options.selector = 'a.unittest.fail';
-      _test.set('options', options);
-      _test.invoke();
-
-      expect(_test.length).to.equal(1);
-      expect(_test[0]).to.be.instanceof(quail.lib.Case);
-      expect(_test[0].get('status')).to.equal('failed');
     });
   });
 
@@ -102,24 +80,6 @@ describe('Test', function () {
       spy = sinon.spy(cb);
       quail.customCallback = spy;
     });
-
-    it('should invoke a custom callback', function () {
-      options = {
-        'type': 'custom',
-        'callback': spy
-      };
-      _test = new quail.lib.Test('fakeLinkTest', options);
-      _test.invoke();
-      sinon.assert.calledWith(spy, quail, _test, quail.lib.Case);
-    });
-
-    it('should invoke a callback', function () {
-      quail.customCallback = spy;
-      options = {
-        'type': 'customCallback'
-      };
-      _test = new quail.lib.Test('fakeLinkTest', options);
-    });
   });
 
   describe('methods', function () {
@@ -128,19 +88,25 @@ describe('Test', function () {
 
     beforeEach(function () {
       _testCollection = new quail.lib.TestCollection();
-      _test = new quail.lib.Test('fakeLinkTest', {
-        'type': 'selector',
-        'options': {
-          'selector': 'a.unittest',
-        },
-        'scope': scope
-      });
+      quail['fakeLinkTest'] = function (quail, test, Case) {
+        for (var i = 0, il = 5; i < il; ++i) {
+          test.add(Case({
+            element: $('<span class="koala"></span>')[0],
+            status: 'passed'
+          }));
+          test.add(Case({
+            element: $('<span class="piggy"></span>')[0],
+            status: 'failed'
+          }));
+        }
+      };
+      _test = new quail.lib.Test('fakeLinkTest');
     });
 
     describe('each', function () {
       it('should create two Cases', function (done) {
         _testCollection.listenTo(_test, 'complete', function (eventName, thisTest, _case) {
-          expect(_test.length).to.equal(2);
+          expect(_test.length).to.equal(10);
           done();
         });
         _test.invoke();
@@ -150,7 +116,7 @@ describe('Test', function () {
         var spy = sinon.spy();
         _testCollection.listenTo(_test, 'complete', function (eventName, thisTest, _case) {
           _test.each(spy);
-          sinon.assert.calledTwice(spy);
+          sinon.assert.callCount(spy, 10);
           done();
         });
         _test.invoke();
@@ -160,9 +126,9 @@ describe('Test', function () {
     describe('findCasesBySelector', function () {
       it('should find cases by selector', function (done) {
         _testCollection.listenTo(_test, 'complete', function (eventName, thisTest, _case) {
-          var cases = thisTest.findCasesBySelector('a[href="#"].fail.unittest');
-          cases = cases.concat(thisTest.findCasesBySelector('a[href="#"].pass.unittest'));
-          expect(cases.length).to.equal(2);
+          var len = thisTest.findCasesBySelector('span.koala').length;
+          len += thisTest.findCasesBySelector('span.piggy').length;
+          expect(len).to.equal(10);
           done();
         });
         _test.invoke();
@@ -173,7 +139,7 @@ describe('Test', function () {
       it('should find cases by status', function (done) {
         _testCollection.listenTo(_test, 'complete', function (eventName, thisTest, _case) {
           var cases = _test.findByStatus('failed');
-          expect(cases.length).to.equal(2);
+          expect(cases.length).to.equal(5);
           done();
         });
         _test.invoke();
@@ -182,13 +148,10 @@ describe('Test', function () {
 
     describe('groupCasesBySelector', function () {
       it('should group cases by selector', function (done) {
-        var options = _test.get('options');
-        options.selector = 'i.unittest';
-        _test.set('options', options);
-
         _testCollection.listenTo(_test, 'complete', function (eventName, thisTest, _case) {
           var casesBySelector = thisTest.groupCasesBySelector();
-          expect(casesBySelector['i.unittest'].length).to.equal(10);
+          expect(casesBySelector['span.koala'].length).to.equal(5);
+          expect(casesBySelector['span.piggy'].length).to.equal(5);
           done();
         });
         _test.invoke();
@@ -202,19 +165,25 @@ describe('Test', function () {
 
     beforeEach(function () {
       _testCollection = new quail.lib.TestCollection();
-      _test = new quail.lib.Test('testCompleteTest', {
-        'type': 'selector',
-        'options': {
-          'selector': 'i.unittest'
-        },
-        'scope': scope
-      });
+      quail['testCompleteTest'] = function (quail, test, Case) {
+        for (var i = 0, il = 5; i < il; ++i) {
+          test.add(Case({
+            element: $('<span class="koala"></span>')[0],
+            status: 'passed'
+          }));
+          test.add(Case({
+            element: $('<span class="piggy"></span>')[0],
+            status: 'failed'
+          }));
+        }
+      };
+      _test = new quail.lib.Test('testCompleteTest');
     });
 
     it('should group cases by HTML', function (done) {
       _testCollection.listenTo(_test, 'complete', function (eventName, thisTest, _case) {
         var casesByHtml = thisTest.groupCasesByHtml();
-        expect(casesByHtml['<i class="unittest">fake italic tag</i>'].length).to.equal(10);
+        expect(casesByHtml['<span class="koala"></span>'].length).to.equal(5);
         done();
       });
       _test.invoke();
@@ -240,13 +209,20 @@ describe('Test', function () {
       var g = {
         'wcag': sc
       };
+      quail['fakeLinkTest'] = function (quail, test, Case) {
+        for (var i = 0, il = 5; i < il; ++i) {
+          test.add(Case({
+            element: $('<span class="koala"></span>')[0],
+            status: 'passed'
+          }));
+          test.add(Case({
+            element: $('<span class="piggy"></span>')[0],
+            status: 'failed'
+          }));
+        }
+      };
       var _test = new quail.lib.Test('fakeLinkTest', {
-        'type': 'selector',
-        'guidelines': g,
-        'options': {
-          'selector': 'i.unittest',
-        },
-        'scope': scope
+        'guidelines': g
       });
       var coverage = _test.getGuidelineCoverage('wcag');
       expect(coverage).to.deep.equal(sc);
@@ -262,13 +238,13 @@ describe('Test', function () {
     describe('resolve event', function () {
 
       beforeEach(function () {
-        _test = new quail.lib.Test('testCompleteTest', {
-          'type': 'selector',
-          'options': {
-            'selector': 'b.unittest'
-          },
-          'scope': scope
-        });
+        quail['testCompleteTest'] = function (quail, test, Case) {
+          test.add(Case({
+            element: $('<span class="koala"></span>')[0],
+            status: 'passed'
+          }));
+        };
+        _test = new quail.lib.Test('testCompleteTest');
       });
 
       it('should fire the resolved event', function (done) {
@@ -285,13 +261,19 @@ describe('Test', function () {
       var callback;
 
       beforeEach(function () {
-        _test = new quail.lib.Test('testCompleteTest', {
-          'type': 'selector',
-          'options': {
-            'selector': 'i.unittest'
-          },
-          'scope': scope
-        });
+        quail['testCompleteTest'] = function (quail, test, Case) {
+          for (var i = 0, il = 5; i < il; ++i) {
+            test.add(Case({
+              element: $('<span class="koala"></span>')[0],
+              status: 'passed'
+            }));
+            test.add(Case({
+              element: $('<span class="piggy"></span>')[0],
+              status: 'failed'
+            }));
+          }
+        };
+        _test = new quail.lib.Test('testCompleteTest');
       });
 
       it('should fire the event when all test cases are complete', function (done) {

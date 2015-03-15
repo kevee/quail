@@ -7,14 +7,12 @@
  */
 quail.components.selector = function (quail, test, Case, options) {
   this.get('$scope').each(function() {
-    var $scope = $(this);
     var candidates = $(this).find(options.selector);
     // Passes.
     if (!candidates.length) {
       // Passes.
       test.add(quail.lib.Case({
         element: undefined,
-        expected: $scope.data('expected') || $scope.find('[data-expected]').data('expected'),
         // status: 'passed'
         status: (options.test ? 'inapplicable' : 'passed')
       }));
@@ -34,7 +32,6 @@ quail.components.selector = function (quail, test, Case, options) {
 
         test.add(quail.lib.Case({
           element: this,
-          expected: $this.closest('.quail-test').data('expected'),
           status: status
         }));
       });

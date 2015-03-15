@@ -1,11 +1,10 @@
-// Karma configuration
-// Generated on Sat Oct 11 2014 17:44:41 GMT-0400 (EDT)
+// Karma configuration for Quail unit tests
 
 module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+    basePath: '..',
 
 
     // frameworks to use
@@ -16,18 +15,16 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       // Dependencies
-      {pattern: 'bower_components/jquery/jquery.min.js', watched: false},
+      {pattern: 'node_modules/jquery/dist/jquery.min.js', watched: false},
 
       // Fixtures
       {pattern: 'src/js/core.js'},
       {pattern: 'src/js/components/*.js'},
-      {pattern: 'src/js/strings/*.js'},
       {pattern: 'src/js/custom/*.js'},
       {pattern: 'src/js/lib/*.js'},
-      {pattern: 'src/js/lib/wcag/*.js'},
 
       // Specs
-      {pattern: 'test/**/*Spec.js'},
+      {pattern: 'test/unit/*Spec.js'},
     ],
 
 
@@ -39,13 +36,20 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+      '**/*.html': ['html2js']
     },
 
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['spec'],
+
+    // the default configuration
+    htmlReporter: {
+      outputDir: 'karma_html',
+      templatePath: __dirname + '/node_modules/karma-html-reporter/jasmine_template.html'
+    },
 
 
     // web server port
@@ -79,6 +83,6 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false
+    singleRun: true
   });
 };
