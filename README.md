@@ -145,7 +145,7 @@ _BROWSER=chrome node ./test/assessmentSpecs/testRunner.js
 
 Pull requests should be made against the **master** branch.
 
-We are currently looking for the following types of contritions.
+We are currently looking for the following types of contributions.
 
 1. Help with our current [Milestone objectives](https://github.com/quailjs/quail/milestones/Refactoring%20to%20a%20Selenium-based%20test%20runner%20and%20Mocha/Chai%20assessment%20tests).
 1. JavaScript enthusiasts who want a chance to build out:
