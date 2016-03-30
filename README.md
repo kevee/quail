@@ -2,7 +2,7 @@
 
 # Quail: Accessibility Information Library
 
-**The project website is [quailjs.io](http://quailjs.io/).**
+**The project website is [quailjs.org](http://quailjs.org/).**
 
 Quail is a Node module and a jQuery plugin that lets you easily check HTML for adherence to accessibility standards. It comes with over 200 tests which implement Open Accessibility Tests and comes with WCAG 1.0, WCAG 2.0, and Section 508 guidelines.
 
