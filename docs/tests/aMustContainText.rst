@@ -13,7 +13,7 @@ Because many users of screen-readers use links to navigate the page, providing l
 
 Example
 -------
- Wrong
+Wrong
 -----
 
 .. code-block:: html
@@ -29,7 +29,7 @@ Example
 
 
 
- Right
+Right
 -----
  
 .. code-block:: html
