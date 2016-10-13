@@ -13,22 +13,17 @@ Images within a link should not have an alt attribute that simply repeats the te
 
 Example
 -------
- Wrong
+Wrong
 -----
 
 .. code-block:: html
 
-    <a href="home.html"><img src="home.png" alt="Return home">Return home</a>
+    <a href="home.html"><img src="home.png" alt="Return home" />Return home</a>
 
 
-
- Right
+Right
 -----
 
 .. code-block:: html
 
-    <a href="home.html"><img src="home.png" alt="">Return home</a>
-
-
-
-
+    <a href="home.html"><img src="home.png" alt="" />Return home</a>
