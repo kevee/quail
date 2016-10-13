@@ -6,14 +6,6 @@ All applets do not flicker
 
 .. php:class:: appletsDoNotFlicker
 
-
 Applets should not flicker.
 
-
-
-
-<strong>Applets cannot be checked using automated tools, this should be reviewed manually.</strong>
-
-
-
-
+**Applets cannot be checked using automated tools, this should be reviewed manually.**
