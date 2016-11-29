@@ -7,4 +7,4 @@ Severity code: 0
 .. php:class:: aLinkTextDoesNotBeginWithRedundantWord
 
 
-Link text should not begin with redundant words or phrases like "link
+Link text should not begin with redundant words or phrases like "link".
